@@ -83,6 +83,3 @@ function Start() {
   }
   setInterval(petla, 100);
 }
-// function Stop() {
-//     document.querySelector(".button").classList.add("clicked");
-// }

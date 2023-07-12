@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>GPS_Obliczenia-VMG_ver_11</title>
+	
+	<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+	
+    <p><button onclick="Start()"> Start </button></p>
+	<h1>Kurs  Minuty</h1>
+	<input id="Kurss"> </input>
+	<input id="Interwal"> </input>
+	<h1> min.</h1>
+
+	<h2 id="latOld2">50.70123</h2>
+	<h2>___</h2>
+    <h2 id="lonOld2">21.75419<br></h2>
+	<p id="No">1<br></p>
+	<h1><br></h1>
+
+	 <h3 id="DlugoscSzerokosc"></h3>
+     
+	 
+	 <h3><br></h3>
+	 
+	
+
+	<script>
+	
+	function Dynamic()
+	{
+	 var Kurss = document.getElementById("Kurss").value;
+     document.getElementById("DlugoscSzerokosc").innerHTML = "Kurs " + Kurss + "<br>" + document.getElementById("DlugoscSzerokosc").innerHTML;
+
+	}
+	
+	
+	let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+//    function Bearr(){
+//	var Bearing = 190;
+//	let BearingText = Bearing.toString();
+//	let Dlugosc = BearingText.length;
+//	if(Dlugosc == 1) {BearingText = "00" + BearingText;}
+//	if(Dlugosc == 2) {BearingText = "0" + BearingText;}	
+//
+//	document.getElementById("DlugoscSzerokosc").innerHTML += BearingText;
+//	}
+
+    function Dzwiek()
+	{ const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      oscillator.type = "sine";
+      oscillator.frequency.value = 100;
+
+      const now = audioContext.currentTime;
+      gainNode.gain.setValueAtTime(20, now);
+      gainNode.gain.exponentialRampToValueAtTime(0.11, now + 1);
+      oscillator.start(now);
+      oscillator.stop(now + 1);
+	}
+
+	
+function Start()
+{
+
+     var Interwal = document.getElementById("Interwal").value*60000;
+     var Licznik = Interwal;
+  
+	function petla() 
+	   {
+
+	   if (Licznik >= Interwal)
+	      {
+			navigator.geolocation.getCurrentPosition(function(location) 
+			{
+             var lat = location.coords.latitude;
+			 var lon = location.coords.longitude;
+			 let latOld = document.getElementById("latOld2").textContent;
+			 let lonOld = document.getElementById("lonOld2").textContent;
+			 let No = document.getElementById("No").textContent;
+			 No = No *1;
+			 latOld = latOld * 1;
+			 lonOld = lonOld *1;
+			 var Interwal = document.getElementById("Interwal").value*60000;
+			 var Kurss = document.getElementById("Kurss").value;
+			 
+			 var theta = lon - lonOld;
+			 var Dystans = 60 * (180/Math.PI) * Math.acos(Math.sin(lat * (Math.PI/180)) * Math.sin(latOld * (Math.PI/180)) + Math.cos(lat * (Math.PI/180)) * Math.cos(latOld * (Math.PI/180)) * Math.cos(theta * (Math.PI/180))); 
+			 var Dystans2 = Dystans.toFixed(3);
+			 
+			 var Predkosc = ((Dystans * 3600144) / Interwal).toFixed(2);
+			 
+			 var BearingY = Math.sin(lon * (Math.PI/180) - lonOld * (Math.PI/180)) * Math.cos(lat * (Math.PI/180));
+			 var BearingX = Math.cos(latOld * (Math.PI/180)) * Math.sin(lat * (Math.PI/180)) - Math.sin(latOld * (Math.PI/180)) * Math.cos(lat * (Math.PI/180)) * Math.cos(lon * (Math.PI/180) - lonOld * (Math.PI/180))
+			 var Bearing = Math.atan2(BearingY, BearingX);
+			 Bearing = Bearing * 180 / Math.PI;
+			 Bearing = Math.round((Bearing + 360) % 360);
+			 let BearingText = Bearing.toString();
+	         let Dlugosc = BearingText.length;
+	             if(Dlugosc == 1) {BearingText = "00" + BearingText;}
+	             if(Dlugosc == 2) {BearingText = "0" + BearingText;}	
+			 			 
+			 var DystansMG = Dystans * Math.cos(Kurss * (Math.PI/180) - Bearing * (Math.PI/180));
+			 var DystansMG2 = DystansMG.toFixed(3);
+			 
+			 var VMG = ((DystansMG * 3600144) / Interwal).toFixed(2); 
+			 
+			 if(No == 1) { document.getElementById("DlugoscSzerokosc").innerHTML = "BRG_SOG_VMG<br>";}
+			 else        { document.getElementById("DlugoscSzerokosc").innerHTML = BearingText + "___" + Predkosc + "__" + VMG + "<br>" + document.getElementById("DlugoscSzerokosc").innerHTML;}
+				  
+             document.getElementById("No").innerHTML = No + 1;			   
+			 document.getElementById("latOld2").innerHTML = lat;
+			 document.getElementById("lonOld2").innerHTML = lon;
+			 
+			 Dzwiek();
+			 
+			});
+			Licznik = 0;
+		  }
+		 
+		  
+		  Licznik = Licznik + 100;
+       }	 
+	 setInterval(petla, 100);
+	 
+}
+
+	</script>
+</body>
+</html>
