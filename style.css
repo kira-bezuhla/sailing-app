@@ -1,22 +1,36 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;700&family=Montserrat:wght@300;400;700&display=swap");
-
+/* @import url('./reset.css'); */
 /* 
 font-family: 'Fira Sans', sans-serif;
 font-family: 'Montserrat', sans-serif;
  */
-*{
+/* *{
     border: 1px solid blue;
+} */
+:root {
+  --light-grey: rgb(172, 172, 172);
+  --dark-grey: rgb(69, 69, 69);
+  --black: #000;
+  --white: #fff;
+
+  --bg-color: rgb(42, 42, 42);
+  --btn-bg: lightgrey;
+  --clicked-btn-bg: rgb(195, 195, 195);
 }
+
 body {
-  color: white;
-  background-color: rgb(42, 42, 42);
+  color: var(--white);
+  background-color: var(--bg-color);
 
   font-family: "Montserrat", sans-serif;
   font-size: 35px;
 }
-.button {
-  
+section {
+  margin: 50px 0;
+}
 
+/* BUTTON */
+.button {
   width: 350px;
   height: 100px;
 
@@ -24,79 +38,95 @@ body {
   font-weight: 700;
   font-size: 60px;
 
-  border: 1px solid rgb(42, 42, 42);
+  border: 1px solid var(--background-color);
   border-radius: 25px;
 }
-.unclicked{
-    background-color: lightgrey;
-    box-shadow: 0px 5px 35px 0px rgba(0, 0, 0, 0.25) ;
+.unclicked {
+  background-color: var(--btn-bg);
+  box-shadow: 0px 5px 35px 0px rgba(0, 0, 0, 0.25);
 }
-.clicked{
-background-color: rgb(195, 195, 195);
-color: rgb(91, 91, 91);
-box-shadow: 0px 5px 35px 0px rgba(0, 0, 0, 0.45) inset;
+.clicked {
+  background-color: var(--clicked-btn-bg);
+  color: var(--dark-grey);
+  box-shadow: 0px 5px 35px 0px rgba(0, 0, 0, 0.45) inset;
 }
+
 input {
-  color: black;
+  color: var(--black);
   font-size: 60px;
   font-weight: 700;
+  text-align: center;
 
   width: 300px;
   border-radius: 15px;
-  box-shadow: 0px 5px 35px 0px rgba(0, 0, 0, 0.25) ;
-}
-h1 {
-  font-size: 60px;
-}
-h2 {
-  font-size: 50px;
-  float: left;
-  display: none;
-
-}
-h3 {
-  font-size: 70px;
+  box-shadow: 0px 5px 35px 0px rgba(0, 0, 0, 0.25);
 }
 p {
-  
   margin: 7px 0;
 }
 .container {
   margin: 20px auto;
-  padding: 0 50px;
+  padding: 0 70px;
 }
 .title {
+  font-size: 60px;
   margin: 10px auto;
 }
+
+/* INPUT */
 .input-data {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 40px 40px;
-  margin-top: 30px;
+  column-gap: 20px;
+  padding: 40px 30px;
 
-  background-color: rgb(172, 172, 172);
-  border: 2px solid rgb(69, 69, 69);
+  background-color: var(--light-grey);
+  border: 2px solid var(--dark-grey);
   border-radius: 25px;
 
   box-shadow: 0px 5px 35px 0px rgba(0, 0, 0, 0.75);
 }
 
-.calculations{
-    display: flex;
-    flex-direction: column;
 
-    align-items: center;
+
+/* DEVICES SECTION */
+.devices {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-around;
 }
-.instruction{
-    border-top: 1px solid rgb(172, 172, 172);
+
+/* INTERVAL LIST */
+.interval-list {
+  display: flex;
+  justify-content: center;
 }
-.instruction-text{
-    margin: 35px auto;
+.interval-list__list {
+  margin: 0 0;
+  /* list-style-type: none; */
 }
-.instruction-list ul{
-    list-style-type: square;
+.interval-list__list li {
+  margin-bottom: 35px;
+  padding-left: 30px;
+
+  font-size: 45px;
+  font-weight: 300;
+
+  /* border-bottom: 1px solid var(--light-grey); */
 }
-.instruction-list li{
-    margin-bottom: 15px;
+
+/* INSTRUCTIONS */
+.instruction {
+  border-top: 1px solid var(--light-grey);
+}
+.instruction-text {
+  margin: 35px auto;
+}
+.instruction-list ul {
+  list-style-type: square;
+}
+.instruction-list li {
+  margin-bottom: 15px;
 }
