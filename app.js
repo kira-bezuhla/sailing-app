@@ -10,6 +10,7 @@ const list = document.getElementById("list"); //list for interval values
 let timer; //for stopwatch
 let listInterval,
   counter = 0; //for interval speed
+let speedWatch; //for speedometer
 
 let counter2 = 0;
 let isClicked = false; //for button
@@ -26,7 +27,7 @@ btnStart.onclick = () => {
     document.querySelector(".button").classList.add("clicked");
 
     startStopwatch(); //Stopwatch start
-    //debugger
+    startSpeedometer();
     startIntervalSpeedList();
   } else {
     //Stop
@@ -36,6 +37,7 @@ btnStart.onclick = () => {
 
     stopStopwatch(); //Stopwatch stop
     stopIntervalSpeedList();
+    stopSpeedometer();
   }
 };
 
@@ -117,7 +119,7 @@ function loop() {
       sound();
     },
     () => {
-      console.log("i broke");
+      alert("Разрешите приложению пользоваться геоданными, чтобы это работало");
     }
   );
 }
@@ -141,4 +143,18 @@ function sound() {
   gainNode.gain.exponentialRampToValueAtTime(0.11, now + 1);
   oscillator.start(now);
   oscillator.stop(now + 1);
+}
+function startSpeedometer() {
+  speedWatch = navigator.geolocation.watchPosition(
+    (position) => {
+      speedometer.textContent = (position.coords.speed / 1.852).toFixed(2);
+    },
+    () => {
+      alert("Разрешите приложению пользоваться геоданными, чтобы это работало");
+    }
+  );
+  console.log("speeeeeeeding");
+}
+function stopSpeedometer() {
+  navigator.geolocation.clearWatch(speedWatch);
 }
