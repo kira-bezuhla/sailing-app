@@ -25,10 +25,12 @@ btnStart.onclick = () => {
     isClicked = true;
     document.querySelector(".button").classList.remove("unclicked");
     document.querySelector(".button").classList.add("clicked");
+    list.innerHTML = '';
 
     startStopwatch(); //Stopwatch start
-    startSpeedometer();
     startIntervalSpeedList();
+    //startSpeedometer();
+    
   } else {
     //Stop
     isClicked = false;
@@ -37,7 +39,7 @@ btnStart.onclick = () => {
 
     stopStopwatch(); //Stopwatch stop
     stopIntervalSpeedList();
-    stopSpeedometer();
+    //stopSpeedometer();
   }
 };
 
@@ -92,7 +94,6 @@ function calculateDistance(pos1, pos2) {
 }
 function addInterwalInfo(time = "время", speed = "скорость") {
   let str = time + "   ---   " + speed + " kt";
-  //list.innerHTML = `<li>${str}</li>`;
   list.insertAdjacentHTML("afterbegin", `<li>${str}</li>`);
 }
 function loop() {
@@ -115,7 +116,7 @@ function loop() {
       pos1.lon = pos2.lon;
 
       counter++;
-
+      console.log(pos1);
       sound();
     },
     () => {
