@@ -29,6 +29,12 @@ section {
   margin: 50px 0;
 }
 
+/* input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+opacity: 1;
+height: auto;
+} */
+
 /* BUTTON */
 .button {
   width: 350px;
@@ -56,6 +62,7 @@ input {
   font-size: 60px;
   font-weight: 700;
   text-align: center;
+  
 
   width: 300px;
   border-radius: 15px;
@@ -102,14 +109,15 @@ p {
 .interval-list {
   display: flex;
   justify-content: center;
+  text-align: center;
 }
 .interval-list__list {
   margin: 0 0;
-  /* list-style-type: none; */
+  list-style-type: none;
 }
 .interval-list__list li {
   margin-bottom: 35px;
-  padding-left: 30px;
+  /* padding-left: 30px; */
 
   font-size: 45px;
   font-weight: 300;
