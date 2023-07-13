@@ -2,44 +2,67 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>GPS_Obliczenia-VMG_ver_11</title>
+    <title>Speedy</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <script src="app.js"></script>
+    <script src="app1.js" defer></script>
   </head>
   <body>
-    <div class="container">
-      <h1 class="title">Введите данные</h1>
-      <p>и нажмите start</p>
-      <div class="input-data">
-        <div class="input-data__form">          
-          <div class="input-data__form-item">
-            <input id="Interwal" type="number" />
-            <p>интервал (мин)</p>
+    <header class="header">
+      <div class="container">
+        <h1 class="title">Введите данные</h1>
+        <p>и нажмите start</p>
+      </div>
+    </header>
+
+    <section>
+      <div class="container">
+        <div class="input-data">
+          <div class="input-data__form">
+            <div class="input-data__form-item">
+              <input
+                id="interval"
+                type="number"
+                value="1"
+                min="0"
+                max="60"
+                step="0.5"
+                autofocus
+              />
+              <p>интервал (мин)</p>
+            </div>
+          </div>
+          <div class="input-data__buttons">
+            <button class="button unclicked" id="button-start">Start</button>
+            <!-- <button onclick="Stop()" class="button unclicked">Stop</button> -->
           </div>
         </div>
-        <div class="input-data__buttons">
-          <button onclick="Start()" class="button unclicked">Start</button>
-          <!-- <button onclick="Stop()" class="button unclicked">Stop</button> -->
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="devices">
+          <div class="device-item">
+            <h1 class="title" id="stopwatch">00:00</h1>
+          </div>
+
+          <div class="device-item">
+            <h1 class="title" id="speedometer">0.00 kt</h1>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="calculations">
-        <div class="some-data">
-          <h2 id="latOld2">50.70123</h2>
-          <h2>___</h2>
-		  
-          <h2 id="lonOld2">21.75419<br /></h2>
-          <!-- <p id="No">1<br /></p> -->
-         
-        </div>
-        <div class="endless-data">
-          <h3 id="DlugoscSzerokosc"></h3>
+    <section>
+      <div class="container">
+        <div class="interval-list">
+          <ol class="interval-list__list" id="list"></ol>
         </div>
       </div>
+    </section>
 
-      <div class="instruction">
-        <h1 class="title">Инструкция</h1>
+    <!-- <h1 class="title">Инструкция</h1>     
         <div class="instruction-text">
           <p>
             Введите курс (в градусах), по которому вы хотели бы плыть, и
@@ -90,7 +113,6 @@
             Вы сравните, на каком участке скорость [VMG] была наибольшей.
           </p>
         </div>
-      </div>
-    </div>
+      </div> -->
   </body>
 </html>
