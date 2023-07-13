@@ -1,25 +1,133 @@
-// function Dynamic() {
-//   var Kurss = document.getElementById("Kurss").value;
-//   document.getElementById("DlugoscSzerokosc").innerHTML =
-//     "Kurs " +
-//     Kurss +
-//     "<br>" +
-//     document.getElementById("DlugoscSzerokosc").innerHTML;
-// }
+//start
+const btnStart = document.getElementById("button-start"); //button
+const interval = document.getElementById("interval"); //input
+//devices h1
+const stopwatch = document.getElementById("stopwatch"); //stopwatch
+const speedometer = document.getElementById("speedometer"); //speedometer
 
-let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const list = document.getElementById("list"); //list for interval values
 
-//    function Bearr(){
-//	var Bearing = 190;
-//	let BearingText = Bearing.toString();
-//	let Dlugosc = BearingText.length;
-//	if(Dlugosc == 1) {BearingText = "00" + BearingText;}
-//	if(Dlugosc == 2) {BearingText = "0" + BearingText;}
-//
-//	document.getElementById("DlugoscSzerokosc").innerHTML += BearingText;
-//	}
+let timer; //for stopwatch
+let listInterval,
+  counter = 0; //for interval speed
 
-function Sound() {
+let counter2 = 0;
+let isClicked = false; //for button
+
+//for calculating distance
+let pos1 = { lat: 0.0, lon: 0.0 };
+let pos2 = { lat: 0.0, lon: 0.0 };
+
+btnStart.onclick = () => {
+  if (!isClicked) {
+    //Start
+    isClicked = true;
+    document.querySelector(".button").classList.remove("unclicked");
+    document.querySelector(".button").classList.add("clicked");
+
+    startStopwatch(); //Stopwatch start
+    //debugger
+    startIntervalSpeedList();
+  } else {
+    //Stop
+    isClicked = false;
+    document.querySelector(".button").classList.remove("clicked");
+    document.querySelector(".button").classList.add("unclicked");
+
+    stopStopwatch(); //Stopwatch stop
+    stopIntervalSpeedList();
+  }
+};
+
+function startStopwatch() {
+  let sec = 0;
+  let min = 0;
+  let time = "";
+  timer = setInterval(() => {
+    sec++;
+    if (sec === 60) {
+      sec = 0;
+      min++;
+    }
+    if (min < 10) {
+      time = "0" + min;
+    } else {
+      time = min;
+    }
+    if (sec < 10) {
+      time += ":0" + sec;
+    } else {
+      time += ":" + sec;
+    }
+    stopwatch.textContent = time;
+  }, 1000);
+}
+function stopStopwatch() {
+  clearInterval(timer);
+}
+function toRadians(degrees) {
+  return degrees * (Math.PI / 180);
+}
+function calculateDistance(pos1, pos2) {
+  const earthRadius = 3440.07; // Средний радиус Земли для морских миль
+
+  // Преобразование градусов в радианы
+  const φ1 = toRadians(pos1.lat);
+  const φ2 = toRadians(pos2.lat);
+  const Δφ = toRadians(pos2.lat - pos1.lat);
+  const Δλ = toRadians(pos2.lon - pos1.lon);
+
+  // Вычисление формулы гаверсинусов
+  const a =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  // Вычисление расстояния
+  const distance = earthRadius * c;
+  return distance;
+}
+function addInterwalInfo(time = "время", speed = "скорость") {
+  let str = time + "   ---   " + speed + " kt";
+  //list.innerHTML = `<li>${str}</li>`;
+  list.insertAdjacentHTML("afterbegin", `<li>${str}</li>`);
+}
+function loop() {
+  navigator.geolocation.getCurrentPosition(
+    function (position) {
+      pos2.lat = position.coords.latitude;
+      pos2.lon = position.coords.longitude;
+
+      let dist = calculateDistance(pos1, pos2);
+      let time = interval.value / 60;
+      let speed = (dist / time).toFixed(2);
+
+      if (counter > 0) {
+        addInterwalInfo(stopwatch.textContent, speed);
+      } else {
+        addInterwalInfo(undefined, undefined);
+      }
+
+      pos1.lat = pos2.lat;
+      pos1.lon = pos2.lon;
+
+      counter++;
+
+      sound();
+    },
+    () => {
+      console.log("i broke");
+    }
+  );
+}
+function startIntervalSpeedList() {
+  listInterval = setInterval(loop, interval.value * 60 * 1000);
+}
+function stopIntervalSpeedList() {
+  clearInterval(listInterval);
+}
+function sound() {
   const oscillator = audioContext.createOscillator();
   const gainNode = audioContext.createGain();
   oscillator.connect(gainNode);
@@ -33,53 +141,4 @@ function Sound() {
   gainNode.gain.exponentialRampToValueAtTime(0.11, now + 1);
   oscillator.start(now);
   oscillator.stop(now + 1);
-}
-let No = 1;
-function Start() {
-  document.querySelector(".button").classList.add("clicked");
-  var Interwal = document.getElementById("Interwal").value * 60000;
-  var Licznik = Interwal;
-  
-  
-
-  function petla() {
-    if (Licznik >= Interwal) {
-      navigator.geolocation.getCurrentPosition(function (location) {
-        var lat = location.coords.latitude;
-        var lon = location.coords.longitude;
-
-        let latOld = Number(document.getElementById("latOld2").textContent);
-        let lonOld = Number(document.getElementById("lonOld2").textContent);
-
-        var Interwal = document.getElementById("Interwal").value * 60000;
-
-        var theta = lon - lonOld;
-        var Dystans =
-          60 *
-          (180 / Math.PI) *
-          Math.acos(
-            Math.sin(lat * (Math.PI / 180)) *
-              Math.sin(latOld * (Math.PI / 180)) +
-              Math.cos(lat * (Math.PI / 180)) *
-                Math.cos(latOld * (Math.PI / 180)) *
-                Math.cos(theta * (Math.PI / 180))
-          );
-
-        var Predkosc = ((Dystans * 3600144) / Interwal).toFixed(2);
-
-        document.getElementById("DlugoscSzerokosc").innerHTML =
-          `${No} - ${Predkosc} kn<br>` +
-          document.getElementById("DlugoscSzerokosc").innerHTML;
-
-        document.getElementById("latOld2").innerHTML = lat;
-        document.getElementById("lonOld2").innerHTML = lon;
-        No++;
-
-        // Sound();
-      });
-      Licznik = 0;
-    }
-    Licznik += 100;
-  }
-  setInterval(petla, 100);
 }
