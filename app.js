@@ -8,9 +8,9 @@ const speedometer = document.getElementById("speedometer"); //speedometer
 const list = document.getElementById("list"); //list for interval values
 
 let timer; //for stopwatch
-let listInterval,
+let loopInterval = null,
   counter = 0; //for interval speed
-let speedWatch; //for speedometer
+let speedWatch = null; //for speedometer
 
 let counter2 = 0;
 let isClicked = false; //for button
@@ -31,7 +31,7 @@ btnStart.onclick = () => {
 
     startStopwatch(); //Stopwatch start
     startIntervalSpeedList();
-    //startSpeedometer();
+   // startSpeedometer();
   } else {
     //Stop
     isClicked = false;
@@ -116,7 +116,7 @@ function loop() {
       pos1.lat = pos2.lat;
       pos1.lon = pos2.lon;
 
-      //console.log(counter);
+      console.log(counter);
       counter++;
 
       sound();
@@ -127,10 +127,10 @@ function loop() {
   );
 }
 function startIntervalSpeedList() {
-  listInterval = setInterval(loop, interval.value * 60 * 1000);
+  loopInterval = setInterval(loop, interval.value * 60 * 1000);
 }
 function stopIntervalSpeedList() {
-  clearInterval(listInterval);
+  clearInterval(loopInterval);
 }
 function sound() {
   const oscillator = audioContext.createOscillator();
@@ -154,8 +154,8 @@ function startSpeedometer() {
   speedWatch = navigator.geolocation.watchPosition(
     (position) => {
       speedometer.textContent =
-        (position.coords.speed / 1.852).toFixed(2).toString() + " kt";
-      console.log((position.coords.speed / 1.852).toFixed(2) + " kt");
+        (position.coords.speed / 0.5144).toFixed(2).toString() + " kt";
+      console.log((position.coords.speed / 0.5144).toFixed(2) + " kt");
     },
     () => {
       alert("Разрешите приложению пользоваться геоданными, чтобы это работало");
