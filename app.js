@@ -15,6 +15,8 @@ let speedWatch; //for speedometer
 let counter2 = 0;
 let isClicked = false; //for button
 
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
 //for calculating distance
 let pos1 = { lat: 0.0, lon: 0.0 };
 let pos2 = { lat: 0.0, lon: 0.0 };
@@ -25,12 +27,11 @@ btnStart.onclick = () => {
     isClicked = true;
     document.querySelector(".button").classList.remove("unclicked");
     document.querySelector(".button").classList.add("clicked");
-    list.innerHTML = '';
+    list.innerHTML = "";
 
     startStopwatch(); //Stopwatch start
-    //startIntervalSpeedList();
-    startSpeedometer();
-    
+    startIntervalSpeedList();
+    //startSpeedometer();
   } else {
     //Stop
     isClicked = false;
@@ -38,8 +39,8 @@ btnStart.onclick = () => {
     document.querySelector(".button").classList.add("unclicked");
 
     stopStopwatch(); //Stopwatch stop
-    //stopIntervalSpeedList();
-    stopSpeedometer();
+    stopIntervalSpeedList();
+    //stopSpeedometer();
   }
 };
 
@@ -92,7 +93,7 @@ function calculateDistance(pos1, pos2) {
   const distance = earthRadius * c;
   return distance;
 }
-function addInterwalInfo(time = "время", speed = "скорость") {
+function addIntervalInfo(time = "time", speed = "speed") {
   let str = time + "   ---   " + speed + " kt";
   list.insertAdjacentHTML("afterbegin", `<li>${str}</li>`);
 }
@@ -107,16 +108,17 @@ function loop() {
       let speed = (dist / time).toFixed(2);
 
       if (counter > 0) {
-        addInterwalInfo(stopwatch.textContent, speed);
+        addIntervalInfo(stopwatch.textContent, speed);
       } else {
-        addInterwalInfo(undefined, undefined);
+        addIntervalInfo(undefined, undefined);
       }
 
       pos1.lat = pos2.lat;
       pos1.lon = pos2.lon;
 
+      //console.log(counter);
       counter++;
-      console.log(pos1);
+
       sound();
     },
     () => {
@@ -133,6 +135,7 @@ function stopIntervalSpeedList() {
 function sound() {
   const oscillator = audioContext.createOscillator();
   const gainNode = audioContext.createGain();
+
   oscillator.connect(gainNode);
   gainNode.connect(audioContext.destination);
 
@@ -140,22 +143,24 @@ function sound() {
   oscillator.frequency.value = 100;
 
   const now = audioContext.currentTime;
+
   gainNode.gain.setValueAtTime(20, now);
   gainNode.gain.exponentialRampToValueAtTime(0.11, now + 1);
+
   oscillator.start(now);
   oscillator.stop(now + 1);
 }
 function startSpeedometer() {
   speedWatch = navigator.geolocation.watchPosition(
     (position) => {
-      speedometer.textContent = (position.coords.speed / 1.852).toFixed(2).toString()+' kt';
-      console.log((position.coords.speed / 1.852).toFixed(2) + ' kt');
+      speedometer.textContent =
+        (position.coords.speed / 1.852).toFixed(2).toString() + " kt";
+      console.log((position.coords.speed / 1.852).toFixed(2) + " kt");
     },
     () => {
       alert("Разрешите приложению пользоваться геоданными, чтобы это работало");
     }
   );
- 
 }
 function stopSpeedometer() {
   navigator.geolocation.clearWatch(speedWatch);

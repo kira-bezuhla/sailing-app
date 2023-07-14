@@ -76,7 +76,7 @@ p {
   padding: 0 70px;
 }
 .title {
-  font-size: 60px;
+  font-size: 80px;
   margin: 10px auto;
 }
 
@@ -99,15 +99,20 @@ p {
 
 /* DEVICES SECTION */
 .devices {
-  display: flex;
-  flex-direction: row;
-
-  justify-content: space-around;
+  display: grid;  
+  grid-template-columns: 50% 50%;
+  grid-template-rows: min-content;
+}
+.device-item{
+  justify-self:center;
 }
 
 /* INTERVAL LIST */
 .interval-list {
   display: flex;
+  flex-direction: column;
+  column-gap: 35px;
+
   justify-content: center;
   text-align: center;
 }
@@ -116,10 +121,10 @@ p {
   list-style-type: none;
 }
 .interval-list__list li {
-  margin-bottom: 35px;
+  /* margin-bottom: 35px; */
   /* padding-left: 30px; */
 
-  font-size: 45px;
+  font-size: 80px;
   font-weight: 300;
 
   /* border-bottom: 1px solid var(--light-grey); */
