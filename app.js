@@ -148,13 +148,14 @@ function sound() {
 function startSpeedometer() {
   speedWatch = navigator.geolocation.watchPosition(
     (position) => {
-      speedometer.textContent = (position.coords.speed / 1.852).toFixed(2);
+      speedometer.textContent = (position.coords.speed / 1.852).toFixed(2).toString()+' kt';
+      console.log((position.coords.speed / 1.852).toFixed(2) + ' kt');
     },
     () => {
       alert("Разрешите приложению пользоваться геоданными, чтобы это работало");
     }
   );
-  console.log("speeeeeeeding");
+ 
 }
 function stopSpeedometer() {
   navigator.geolocation.clearWatch(speedWatch);
