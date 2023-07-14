@@ -28,8 +28,8 @@ btnStart.onclick = () => {
     list.innerHTML = '';
 
     startStopwatch(); //Stopwatch start
-    startIntervalSpeedList();
-    //startSpeedometer();
+    //startIntervalSpeedList();
+    startSpeedometer();
     
   } else {
     //Stop
@@ -38,8 +38,8 @@ btnStart.onclick = () => {
     document.querySelector(".button").classList.add("unclicked");
 
     stopStopwatch(); //Stopwatch stop
-    stopIntervalSpeedList();
-    //stopSpeedometer();
+    //stopIntervalSpeedList();
+    stopSpeedometer();
   }
 };
 
